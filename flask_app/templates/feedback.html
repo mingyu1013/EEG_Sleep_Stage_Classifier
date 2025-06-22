@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>수면 피드백</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #eaf7ff, #dceeff);
+      background-image: url("{{ url_for('static', filename='bg_pattern.png') }}");
+      background-size: cover;
+      background-position: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .report-container {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 32px 26px;
+      max-width: 540px;
+      margin: 50px auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 26px;
+      color: #1e40af;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #222;
+      margin-top: 20px;
+      margin-bottom: 6px;
+    }
+
+    .section-content {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #333;
+      background-color: #f3f8ff;
+      border-radius: 12px;
+      padding: 16px 18px;
+      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .back-button {
+      margin-top: 30px;
+      padding: 12px 26px;
+      font-size: 15px;
+      font-weight: bold;
+      color: white;
+      background-color: #1e40af;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .back-button:hover {
+      background-color: #173b99;
+    }
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    <h1>수면 피드백</h1>
+
+    {% if major_stage == "N1" %}
+      <div class="section-title">주요 원인</div>
+      <div class="section-content">
+        소음, 빛 등 환경 요인으로 수면에 잘 들지 못하거나 스트레스, 불안이 가득하면 수면이 얕게 들어요.  
+        수면무호흡증, 코골이 등이 원인일 수도 있어요.
+      </div>
+      <div class="section-title">보완 방안</div>
+      <div class="section-content">
+        자기 전 명상 등으로 스트레스를 완화시키거나 조용하고 어두운 환경을 조성해봐요.  
+        일정한 취침 및 기상 시간 유지도 도움이 돼요.  
+        계속 얕은 수면을 자게 된다면 전문의 상담을 받아보세요.
+      </div>
+
+    {% elif major_stage == "N2" %}
+      <div class="section-title">주요 원인</div>
+      <div class="section-content">
+        이전에 수면이 부족해 회복하는 과정에서 일시적으로 중간 단계가 길어질 수도 있어요.  
+        또는 불규칙한 수면 습관, 일부 약물의 영향일 수 있어요.
+      </div>
+      <div class="section-title">보완 방안</div>
+      <div class="section-content">
+        꾸준한 운동과 낮 시간의 활동을 늘려보세요.  
+        수면 환경을 어둡고 조용하게 만들고, 일정한 수면 리듬을 유지해보세요.  
+        약물을 복용 중이라면 전문가 상담도 고려해보세요.
+      </div>
+
+    {% elif major_stage == "N3" %}
+      <div class="section-title">주요 원인</div>
+      <div class="section-content">
+        수면 부족이나 극심한 피로 상태로 인해 깊게 잠든 경우일 수 있어요.  
+        드물게는 특발성 과다수면증 등의 질환 때문일 수도 있어요.
+      </div>
+      <div class="section-title">보완 방안</div>
+      <div class="section-content">
+        과도하게 오래 자는 습관은 가볍게 낮잠을 자서 조절하고,  
+        수면 및 기상 시간을 일정하게 유지하세요.  
+        규칙적인 운동과 균형 잡힌 식단도 중요해요.
+      </div>
+
+    {% elif major_stage == "REM" %}
+      <div class="section-title">주요 원인</div>
+      <div class="section-content">
+        잠을 제대로 못 자거나 알코올, 항우울제 중단 등으로 인해 REM 단계 비율이 증가할 수 있어요.  
+        스트레스나 불안도 REM 수면을 과도하게 활성화시킬 수 있어요.
+      </div>
+      <div class="section-title">보완 방안</div>
+      <div class="section-content">
+        감정 상태를 안정적으로 유지하는 것이 중요해요.  
+        알코올이나 전자기기 사용은 줄이고,  
+        악몽이나 꿈에 따라 움직이는 현상이 있다면 수면 전문의 상담을 권해요.
+      </div>
+
+    {% else %}
+      <div class="section-title">피드백을 제공할 수 없습니다</div>
+      <div class="section-content">
+        수면 데이터가 부족하거나 예측이 명확하지 않아 분석이 어렵습니다.  
+        다음 분석에서는 더욱 정확한 결과를 제공해드릴게요.
+      </div>
+    {% endif %}
+
+    <a class="back-button" href="{{ url_for('index') }}">홈으로</a>
+  </div>
+</body>
+</html>

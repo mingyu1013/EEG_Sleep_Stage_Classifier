@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>수면 분석 보고서</title>
+  <style>
+    body {
+      background-color: #eaf7ff;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .report-container {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 36px 24px;
+      max-width: 500px;
+      margin: 40px auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .title-shadow {
+      font-size: 26px;
+      font-weight: 900;
+      color: #000000;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 0 #ffffff, 3px 3px 0 #00000022;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+
+    .stage {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1e40af;
+      margin-bottom: 16px;
+    }
+
+    .center-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .character-img {
+      width: 110px;
+    }
+
+    .speech-bubble {
+      background-color: #e7f2ff;
+      border-radius: 16px;
+      padding: 14px 22px;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+      position: relative;
+      min-width: 120px;
+      transform: translateX(-5px);
+    }
+
+    .speech-bubble::before {
+      content: "";
+      position: absolute;
+      left: -22px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 16px;
+      border-style: solid;
+      border-color: transparent #e7f2ff transparent transparent;
+    }
+
+    .speech-bubble .label {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .speech-bubble .value {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1e40af;
+    }
+
+    .ratio-card {
+      background: #f8fbff;
+      border-radius: 20px;
+      padding: 24px 30px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+      display: inline-block;
+      text-align: left;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chart-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    .pie-chart img {
+      width: 180px;
+      border-radius: 16px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    .legend {
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .legend .item {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      font-size: 13px;
+      font-weight: bold;
+      color: #222;
+      border-radius: 12px;
+      padding: 4px 12px;
+    }
+
+    .badge.n1 { background: #ffcccc; }
+    .badge.n2 { background: #cfdfff; }
+    .badge.n3 { background: #d2f8ef; }
+    .badge.rem { background: #fff1b8; }
+
+    .bar-result-box {
+      margin-top: 16px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: #eef3ff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      font-size: 14px;
+      color: #333;
+      text-align: left;
+    }
+
+    .bar-result-box h3 {
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #1e3a8a;
+    }
+
+    .bar-item {
+      margin-bottom: 28px; /* ✅ 간격 조정: 기존 16px → 28px */
+    }
+
+    .bar-label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .bar-zone-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #666;
+      padding: 0 2px;
+      margin-bottom: 4px;
+    }
+
+    .bar-track {
+      position: relative;
+      height: 10px;
+      background: linear-gradient(to right, #d4e1f5 33%, #a3c4f3 34%, #a3c4f3 66%, #d4e1f5 67%);
+      border-radius: 5px;
+    }
+
+    .bar-marker {
+      position: absolute;
+      top: -4px;
+      width: 6px;
+      height: 18px;
+      background-color: #1e40af;
+      border-radius: 3px;
+    }
+
+    .bar-result-text {
+      font-size: 13px;
+      color: #444;
+      margin-top: 4px;
+    }
+
+    .description-box {
+      background-color: #f0f4ff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      font-size: 14px;
+      color: #333;
+      text-align: left;
+      margin-top: 24px;
+      margin-bottom: 32px;
+    }
+    .description-box h3 {
+      font-size: 15px;
+      font-weight: bold;
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    <h1 class="title-shadow">수면 분석 보고서</h1>
+    <p class="subtitle">예측된 수면 단계</p>
+    <p class="stage"><strong>{{ major_stage }}</strong></p>
+
+    <div class="center-box">
+      <img src="{{ url_for('static', filename=character_img) }}" class="character-img" alt="{{ major_stage }} 캐릭터">
+      <div class="speech-bubble">
+        <div class="label">수면 점수</div>
+        <div class="value">{{ sleep_score }}</div>
+      </div>
+    </div>
+
+    {% if stage_description %}
+    <div class="description-box">
+      <h3>예측된 수면 단계 설명</h3>
+      <p>{{ stage_description }}</p>
+    </div>
+    {% else %}
+    <div class="description-box">
+      <h3>예측된 수면 단계 설명</h3>
+      <p style="color: gray;">설명 데이터를 불러오지 못했습니다.</p>
+    </div>
+    {% endif %}
+
+    <div class="ratio-card">
+      <div class="card-title">수면 단계 비율</div>
+      <div class="chart-info">
+        <div class="pie-chart">
+          <img src="{{ url_for('static', filename='percent_pie.png') }}" alt="수면 단계 파이차트">
+        </div>
+        <div class="legend">
+          <div class="item"><span class="badge n1">N1</span> {{ n1_pct }}%</div>
+          <div class="item"><span class="badge n2">N2</span> {{ n2_pct }}%</div>
+          <div class="item"><span class="badge n3">N3</span> {{ n3_pct }}%</div>
+          <div class="item"><span class="badge rem">REM</span> {{ rem_pct }}%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bar-result-box">
+      <h3>최적 수면 비율과 비교</h3>
+      {% for stage, pct, gap in [('N1', n1_pct, gap_n1), ('N2', n2_pct, gap_n2), ('N3', n3_pct, gap_n3), ('REM', rem_pct, gap_rem)] %}
+      <div class="bar-item">
+        <div class="bar-label">{{ stage }} {{ pct }}%</div>
+        <div class="bar-zone-labels">
+          <span>적정 이하</span>
+          <span>적정</span>
+          <span>적정 이상</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-marker" style="left: {{ pct }}%;"></div>
+        </div>
+        <div class="bar-result-text">{{ gap|abs }}% {{ '여유' if gap > 0 else '부족' }}</div>
+      </div>
+      {% endfor %}
+      <p style="margin-top: 10px; font-size: 13px; color: #555;">※ 기준 비율: N1 4%, N2 47%, N3 12%, REM 22%</p>
+    </div>
+
+    <form action="{{ url_for('feedback') }}" method="get">
+      <button type="submit" class="btn-next">다음</button>
+    </form>
+  </div>
+</body>
+</html>

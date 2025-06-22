@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>슬립봇 회원가입</title>
+  <style>
+    body {
+      background-color: #eaf7ff;
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .register-container {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      width: 360px;
+      text-align: center;
+    }
+
+    .character-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .character-row img {
+      width: 55px;
+      height: auto;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 24px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    .register-btn {
+      width: 100%;
+      background-color: #1e40af;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 14px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .register-btn:hover {
+      background-color: #173b99;
+    }
+
+    .link-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+
+    .link-row a {
+      color: #1e40af;
+      text-decoration: none;
+    }
+
+    .link-row a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form class="register-container" method="POST">
+    <!-- 캐릭터 4개 나란히 -->
+    <div class="character-row">
+      <img src="{{ url_for('static', filename='N1.png') }}" alt="N1">
+      <img src="{{ url_for('static', filename='N2.png') }}" alt="N2">
+      <img src="{{ url_for('static', filename='N3.png') }}" alt="N3">
+      <img src="{{ url_for('static', filename='REM.png') }}" alt="REM">
+    </div>
+
+    <h2>슬립봇 회원가입</h2>
+
+    <input type="email" name="email" placeholder="이메일" required>
+    <input type="password" name="password" placeholder="비밀번호" required>
+
+    <button type="submit" class="register-btn">회원가입</button>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <p class="error-message">{{ messages[0] }}</p>
+      {% endif %}
+    {% endwith %}
+
+    <div class="link-row">
+      <a href="{{ url_for('login') }}">로그인으로 이동</a>
+    </div>
+  </form>
+</body>
+</html>

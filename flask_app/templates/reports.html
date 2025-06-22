@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>저장된 수면 리포트</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #eaf7ff;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    h2 {
+      color: #1e40af;
+      font-size: 22px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .report-card {
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      border-radius: 16px;
+      background-color: #f6faff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+      border: none;
+      text-align: left;
+    }
+
+    .report-card p {
+      margin: 6px 0;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 18px;
+      margin-top: 10px;
+      background-color: #1e40af;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #173b99;
+    }
+
+    .no-report {
+      text-align: center;
+      color: #666;
+      margin-top: 40px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📋 저장된 수면 리포트</h2>
+    {% for report in reports %}
+      <div class="report-card">
+        {% set kst_time = report.timestamp + timedelta(hours=9) %}
+        <p><strong>날짜:</strong> {{ kst_time.strftime('%Y-%m-%d %H:%M') }}</p>
+        <p><strong>대표 수면 단계:</strong> {{ report.major_stage }}</p>
+        <p><strong>수면 점수:</strong> {{ report.sleep_score }}</p>
+        <a class="btn" href="{{ url_for('report_detail', report_id=report.id) }}">상세 보기</a>
+      </div>
+    {% else %}
+      <p class="no-report">아직 저장된 리포트가 없습니다.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>

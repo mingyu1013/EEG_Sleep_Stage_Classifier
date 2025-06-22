@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입 완료</title>
+  <style>
+    body {
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Noto Sans KR', sans-serif;
+      animation: fadeOut 3s ease-out forwards;
+      animation-delay: 2s;
+    }
+
+    img {
+      width: 200px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+  </style>
+  <script>
+    // 3.5초 뒤 로그인 페이지로 이동
+    setTimeout(function () {
+      window.location.href = "/login";
+    }, 3500);
+  </script>
+</head>
+<body>
+  <p>회원가입 완료!</p>
+  <img src="{{ url_for('static', filename='happy.png') }}" alt="가입 완료 캐릭터">
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>슬립봇 - 수면 분석</title>
+  <style>
+    body {
+      background-color: #eaf7ff;
+      font-family: 'Noto Sans KR', sans-serif;
+      padding: 40px 0 100px;
+      margin: 0;
+    }
+    .container-wrapper {
+      width: 420px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 25px;
+      padding: 80px 30px 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+    }
+    .character {
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+    }
+    h1 { font-size: 26px; color: #0a6dc1; margin-bottom: 10px; }
+    p { font-size: 14px; color: #333; margin: 10px 0 25px; }
+    input[type="file"] {
+      margin-bottom: 15px;
+      padding: 10px;
+      width: 100%;
+    }
+    input[type="submit"] {
+      background-color: #0a6dc1;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .status {
+      font-size: 15px;
+      margin: 15px 0;
+      font-weight: bold;
+      color: #0a6dc1;
+    }
+    .feedback {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #444;
+    }
+    .feedback ul {
+      padding-left: 0;
+      list-style-type: none;
+    }
+    .feedback li {
+      margin-bottom: 8px;
+    }
+    .fixed-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .fixed-buttons form,
+    .fixed-buttons button {
+      flex: 1;
+      max-width: 180px;
+    }
+    .bottom-button {
+      width: 100%;
+      padding: 13px 0;
+      font-size: 14px;
+      font-weight: bold;
+      border: 2px solid white;
+      border-radius: 30px;
+      cursor: pointer;
+      background-color: black;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .bottom-link-container {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .bottom-link-btn {
+      font-size: 13px;
+      color: #1e40af;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-wrapper">
+    <img src="{{ url_for('static', filename='sleepbot_character.png') }}" class="character" />
+    <h1>슬립봇</h1>
+
+    {% if not prediction_sequence and not analyzing %}
+      <p>당신의 수면 데이터를 분석해드릴게요 ☁️<br>예측과 피드백을 한 번에!</p>
+      <form method="post" enctype="multipart/form-data">
+        <input type="file" name="eeg_file" accept=".edf,.txt,.csv" required />
+        <input type="submit" value="분석 시작하기" />
+      </form>
+
+      <!-- ✅ 두 개 버튼 모두 복원 -->
+      <div class="bottom-link-container">
+        <a href="{{ url_for('reports') }}" class="bottom-link-btn">📂 저장된 리포트 보기</a>
+        <a href="{{ url_for('score_chart') }}" class="bottom-link-btn">📈 점수 변화 보기</a>
+      </div>
+
+    {% elif analyzing %}
+      <div class="status">🔄 분석중...</div>
+    {% else %}
+      <div class="status">✅ 분석 완료!</div>
+
+      {% if major_stage %}
+        <div class="feedback">
+          <h3>💤 예측된 수면 단계</h3>
+          <p><strong>{{ major_stage }}</strong></p>
+        </div>
+      {% endif %}
+
+      {% if feedback_list %}
+        <div class="feedback">
+          <h3>📄 수면 피드백</h3>
+          <ul>
+          {% for fb in feedback_list %}
+            <li>{{ fb }}</li>
+          {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% if prediction_sequence %}
+  <div class="fixed-buttons">
+    <form method="get" action="/">
+      <button type="submit" class="bottom-button">🔁 다시하기</button>
+    </form>
+    <button onclick="copyLink()" class="bottom-button">📤 테스트 공유하기</button>
+  </div>
+  {% endif %}
+
+  <script>
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href);
+      alert("링크가 복사되었습니다! 친구에게 공유해보세요 :)");
+    }
+  </script>
+</body>
+</html>
