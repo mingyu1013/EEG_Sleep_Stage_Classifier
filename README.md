@@ -1,4 +1,5 @@
 EEG 기반 수면 단계 분류 웹 애플리케이션
+
 🔍 프로젝트 개요
 이 프로젝트는 EEG(뇌파) 데이터를 이용해 수면 단계를 분류하고, Flask 기반 웹 애플리케이션을 통해 결과를 시각화하여 확인할 수 있도록 구성되었습니다.
 
@@ -19,6 +20,7 @@ bash
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r flask_app/requirements.txt
+
 📦 모델과 데이터
 모델: 학습된 모델 cnn_lstm_best.pth 는 GitHub 저장소에 포함되어 있음
 
